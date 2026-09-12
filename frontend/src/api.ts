@@ -1,3 +1,5 @@
+import { apiLocal } from './localApi'
+
 export type Producto = {
   id: number
   codigo: string
@@ -99,7 +101,7 @@ async function request<T>(url: string, options?: RequestInit): Promise<T> {
   return res.json()
 }
 
-export const api = {
+const apiRemota = {
   reiniciarDemo: () => request<{ ok: boolean }>('/api/demo/reset', { method: 'POST' }),
   dashboard: () => request<Dashboard>('/api/dashboard'),
 
@@ -149,6 +151,10 @@ export const api = {
     items: { producto_id: number; cantidad: number; precio_unitario: number }[]
   }) => request<Compra>('/api/compras', { method: 'POST', body: JSON.stringify(c) }),
 }
+
+// En modo demo (sitio estático) los datos viven en el navegador.
+export const modoDemo = import.meta.env.VITE_MODO_DEMO === '1'
+export const api: typeof apiRemota = modoDemo ? apiLocal : apiRemota
 
 export const money = (n: number) =>
   n.toLocaleString('es-AR', { style: 'currency', currency: 'ARS', maximumFractionDigits: 0 })

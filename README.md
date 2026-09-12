@@ -30,6 +30,16 @@ docker compose up --build     # http://localhost:8000
 Levanta todo en un solo puerto (API + interfaz ya compilada) y guarda los datos en un volumen.
 El botón "Reiniciar demo" del encabezado restaura los datos de ejemplo antes de mostrarle la app a un cliente.
 
+## Demo sin servidor (sitio estático)
+
+```bash
+cd frontend
+VITE_MODO_DEMO=1 npm run build   # dist/ se puede subir a cualquier hosting estático
+```
+
+Con `VITE_MODO_DEMO=1` la app no usa la API: guarda productos, ventas, compras y saldos en el
+navegador (localStorage) con los mismos datos de ejemplo. Sirve para mostrarla sin backend.
+
 ## Cómo correrlo en desarrollo
 
 ```bash
