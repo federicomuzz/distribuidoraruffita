@@ -5,8 +5,9 @@ from typing import List, Optional
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from sqlmodel import Session, SQLModel, create_engine, func, select
+from sqlmodel import Session, SQLModel, func, select
 
+from db import engine
 from models import (
     Cliente,
     Compra,
@@ -26,13 +27,6 @@ from schemas import (
     PagoIn,
     VentaIn,
     VentaOut,
-)
-
-DB_PATH = os.getenv("DB_PATH") or (
-    "/data/distri.db" if os.path.isdir("/data") else "distri.db"
-)
-engine = create_engine(
-    f"sqlite:///{DB_PATH}", connect_args={"check_same_thread": False}
 )
 
 app = FastAPI(title="Distribuidora - Stock y Facturacion")

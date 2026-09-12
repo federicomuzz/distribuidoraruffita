@@ -1,6 +1,6 @@
 from sqlmodel import Session, SQLModel, select
 
-from main import engine
+from db import engine
 from models import Cliente, Producto, Proveedor
 
 PRODUCTOS = [
