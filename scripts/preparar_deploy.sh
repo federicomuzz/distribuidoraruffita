@@ -14,24 +14,32 @@ mv "$destino/app/main.py" "$destino/app/api.py"
 touch "$destino/app/__init__.py"
 
 cat > "$destino/pyproject.toml" <<'TOML'
-[project]
-name = "distribuidora-backend"
+[tool.poetry]
+name = "app"
 version = "0.1.0"
 description = "API de stock y facturacion interna para distribuidora"
-requires-python = ">=3.10"
-dependencies = [
-    "fastapi>=0.115.0",
-    "uvicorn[standard]>=0.30.0",
-    "sqlmodel>=0.0.22",
-]
+authors = ["Distribuidora"]
+readme = "README.md"
+packages = [{ include = "app" }]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.115.0"
+uvicorn = { extras = ["standard"], version = "^0.34.0" }
+sqlmodel = "^0.0.22"
 
 [build-system]
-requires = ["setuptools>=68"]
-build-backend = "setuptools.build_meta"
-
-[tool.setuptools]
-packages = ["app"]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
 TOML
+
+cat > "$destino/README.md" <<'MD'
+# Distribuidora — API y demo
+
+Paquete generado por `scripts/preparar_deploy.sh`.
+MD
+
+printf 'fastapi>=0.115.0\nuvicorn[standard]>=0.34.0\nsqlmodel>=0.0.22\n' > "$destino/requirements.txt"
 
 cat > "$destino/app/main.py" <<'PY'
 import os
@@ -46,5 +54,7 @@ PY
 
 (cd "$raiz/frontend" && npm run build)
 cp -r "$raiz/frontend/dist" "$destino/app/static"
+
+(cd "$destino" && poetry lock --no-update >/dev/null 2>&1 || poetry lock >/dev/null)
 
 echo "Listo: $destino"
