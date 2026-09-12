@@ -19,7 +19,18 @@ Los comprobantes son **internos** (no son factura electrónica AFIP/ARCA).
 - Backend: FastAPI + SQLModel + SQLite (`backend/distri.db`)
 - Frontend: React + TypeScript + Vite + Tailwind
 
-## Cómo correrlo
+## Demo en una sola computadora (lo más simple)
+
+Con Docker instalado:
+
+```bash
+docker compose up --build     # http://localhost:8000
+```
+
+Levanta todo en un solo puerto (API + interfaz ya compilada) y guarda los datos en un volumen.
+El botón "Reiniciar demo" del encabezado restaura los datos de ejemplo antes de mostrarle la app a un cliente.
+
+## Cómo correrlo en desarrollo
 
 ```bash
 # backend

@@ -4,6 +4,7 @@ from typing import List, Optional
 
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from sqlmodel import Session, SQLModel, create_engine, func, select
 
 from models import (
@@ -553,3 +554,13 @@ def dashboard(session: Session = Depends(get_session)):
         ][:5],
         "mas_vendidos": [{"descripcion": d, "cantidad": c} for d, c in top],
     }
+
+
+# ---------------- Frontend estático ----------------
+
+FRONTEND_DIR = os.getenv(
+    "FRONTEND_DIR",
+    os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "frontend", "dist"),
+)
+if os.path.isdir(FRONTEND_DIR):
+    app.mount("/", StaticFiles(directory=FRONTEND_DIR, html=True), name="frontend")
